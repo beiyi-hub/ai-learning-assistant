@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pydantic
+python-multipart
+langchain
+autogen
+google-generativeai
+chromadb
+python-dotenv
