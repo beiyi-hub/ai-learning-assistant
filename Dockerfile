@@ -39,13 +39,13 @@ COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf
 RUN pip install --no-cache-dir -r /app/backend/requirements.txt
 
 # 环境变量
-ENV GOOGLE_API_KEY=${GOOGLE_API_KEY}
 ENV OPENAI_API_KEY=${OPENAI_API_KEY}
+ENV BASE_URL=${BASE_URL}
+ENV MODEL_NAME=${MODEL_NAME}
 ENV FASTAPI_HOST=0.0.0.0
 ENV FASTAPI_PORT=8000
 ENV VECTOR_DB_PATH=/app/backend/vector_db
 ENV CHROMA_DB_PATH=/app/backend/vector_db
-ENV OPENAI_MODEL=gpt-3.5-turbo
 
 # 端口
 EXPOSE 80

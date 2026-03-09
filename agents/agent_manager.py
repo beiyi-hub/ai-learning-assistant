@@ -47,19 +47,24 @@ class AgentManager:
         # 获取当前大模型设置
         model_settings = self.settings.model_settings
         
+        # 从环境变量获取配置
+        api_key = os.getenv('OPENAI_API_KEY', model_settings.api_key)
+        base_url = os.getenv('BASE_URL', model_settings.base_url)
+        model_name = os.getenv('MODEL_NAME', model_settings.model_name)
+        
         # 如果有API密钥，使用真实的OpenAI模型
-        if model_settings.api_key:
+        if api_key:
             system_prompt = SystemMessagePromptTemplate.from_template(config["system_prompt"])
             human_prompt = HumanMessagePromptTemplate.from_template("{input}")
             chat_prompt = ChatPromptTemplate.from_messages([system_prompt, human_prompt])
             
             # 使用当前设置创建ChatOpenAI实例
             llm = ChatOpenAI(
-                model=model_settings.model_name,
+                model=model_name,
                 temperature=model_settings.temperature,
                 max_tokens=model_settings.max_tokens,
-                api_key=model_settings.api_key,
-                base_url=model_settings.base_url,
+                api_key=api_key,
+                base_url=base_url,
                 top_p=model_settings.top_p,
                 frequency_penalty=model_settings.frequency_penalty,
                 presence_penalty=model_settings.presence_penalty
@@ -78,11 +83,11 @@ class AgentManager:
                 def run(self, input):
                     # 返回模拟的智能体响应，包含当前设置信息
                     mock_responses = {
-                        "理论导师": f"[理论导师模拟响应] 针对您的问题：{input} (使用模型: {self.model_settings.model_name}, 温度: {self.model_settings.temperature})",
-                        "数据分析师": f"[数据分析师模拟响应] 针对您的问题：{input} (使用模型: {self.model_settings.model_name}, 温度: {self.model_settings.temperature})",
-                        "实践教练": f"[实践教练模拟响应] 针对您的问题：{input} (使用模型: {self.model_settings.model_name}, 温度: {self.model_settings.temperature})",
-                        "提问专家": f"[提问专家模拟响应] 针对您的问题：{input} (使用模型: {self.model_settings.model_name}, 温度: {self.model_settings.temperature})",
-                        "历史记录员": f"[历史记录员模拟响应] 针对您的问题：{input} (使用模型: {self.model_settings.model_name}, 温度: {self.model_settings.temperature})"
+                        "理论导师": f"[理论导师模拟响应] 针对您的问题：{input} (使用模型: {model_name}, 温度: {self.model_settings.temperature})",
+                        "数据分析师": f"[数据分析师模拟响应] 针对您的问题：{input} (使用模型: {model_name}, 温度: {self.model_settings.temperature})",
+                        "实践教练": f"[实践教练模拟响应] 针对您的问题：{input} (使用模型: {model_name}, 温度: {self.model_settings.temperature})",
+                        "提问专家": f"[提问专家模拟响应] 针对您的问题：{input} (使用模型: {model_name}, 温度: {self.model_settings.temperature})",
+                        "历史记录员": f"[历史记录员模拟响应] 针对您的问题：{input} (使用模型: {model_name}, 温度: {self.model_settings.temperature})"
                     }
                     return mock_responses.get(self.agent_name, f"[模拟响应] {input}")
             
