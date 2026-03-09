@@ -199,6 +199,91 @@ ai-learning-assistant/
 4. **多语言支持**：支持中文、英文等多种语言
 5. **移动端适配**：开发移动应用，实现随时随地学习
 
+## Docker 部署
+
+### 快速部署（推荐）
+
+使用 Docker 可以在任何服务器上快速部署，完全隔离环境，不影响服务器上其他项目。
+
+#### 1. 安装 Docker（如果未安装）
+
+```bash
+# CentOS
+sudo yum install -y yum-utils
+sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+sudo yum install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+sudo systemctl start docker
+sudo systemctl enable docker
+```
+
+#### 2. 克隆项目
+
+```bash
+git clone https://github.com/beiyi-hub/ai-learning-assistant.git
+cd ai-learning-assistant
+```
+
+#### 3. 配置环境变量
+
+```bash
+cp .env.example .env
+nano .env
+```
+
+填入你的 API 密钥：
+```
+GOOGLE_API_KEY=your-google-api-key
+OPENAI_API_KEY=your-openai-api-key
+```
+
+#### 4. 一键部署
+
+```bash
+chmod +x deploy.sh
+./deploy.sh
+```
+
+或者手动执行：
+
+```bash
+docker compose up -d
+```
+
+#### 5. 访问应用
+
+- **前端**: http://你的服务器IP:3000
+- **后端 API**: http://你的服务器IP:8000
+- **API 文档**: http://你的服务器IP:8000/docs
+
+### 常用 Docker 命令
+
+```bash
+# 查看运行状态
+docker compose ps
+
+# 查看日志
+docker compose logs -f
+
+# 停止服务
+docker compose down
+
+# 重启服务
+docker compose restart
+
+# 重新构建
+docker compose build --no-cache
+docker compose up -d
+```
+
+### 端口说明
+
+| 服务 | 容器端口 | 宿主机端口 | 说明 |
+|------|----------|------------|------|
+| 前端 | 80 | 3000 | Nginx 静态服务 |
+| 后端 | 8000 | 8000 | FastAPI 服务 |
+
+如果端口冲突，请修改 `docker-compose.yml` 中的端口映射。
+
 ## 贡献指南
 
 欢迎提交Issue和Pull Request，共同改进这个项目。
