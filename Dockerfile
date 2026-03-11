@@ -52,7 +52,8 @@ EXPOSE 80
 EXPOSE 8000
 
 # 创建启动脚本
-RUN echo '#!/bin/bash
+RUN bash -c 'cat > /app/start.sh << "EOF"
+#!/bin/bash
 
 # 启动 Nginx
 nginx
@@ -60,7 +61,7 @@ nginx
 # 启动后端
 cd /app/backend
 uvicorn main:app --host 0.0.0.0 --port 8000
-' > /app/start.sh
+EOF'
 
 RUN chmod +x /app/start.sh
 
